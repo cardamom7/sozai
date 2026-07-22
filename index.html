@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>DQ10 職人必要素材チェッカー</title>
+  <title>DQ10 全職人・必要素材チェッカー</title>
   <style>
     * {
       box-sizing: border-box;
@@ -25,7 +25,7 @@
 
     .container {
       width: 100%;
-      max-width: 480px;
+      max-width: 500px;
       background: #1a2230;
       border: 2px solid #d4af37;
       border-radius: 16px;
@@ -43,7 +43,6 @@
       letter-spacing: 1px;
     }
 
-    /* 絞り込みフォーム */
     .form-group {
       margin-bottom: 16px;
     }
@@ -77,7 +76,7 @@
       cursor: not-allowed;
     }
 
-    /* 素材表示エリア */
+    /* 結果カード */
     .result-card {
       margin-top: 24px;
       background: #0f172a;
@@ -140,11 +139,11 @@
 <body>
 
 <div class="container">
-  <h1>🛡️ 職人必要素材チェッカー</h1>
+  <h1>🛡️ DQ10 全職人必要素材チェッカー</h1>
 
   <!-- 1. 職人選択 -->
   <div class="form-group">
-    <label>1. 職人を選ぶ</label>
+    <label>1. 職人を選ぶ（全8職人）</label>
     <select id="select-job">
       <option value="">-- 職人を選択 --</option>
     </select>
@@ -160,7 +159,7 @@
 
   <!-- 3. アイテム選択 -->
   <div class="form-group">
-    <label>3. 作りたいものを探す</label>
+    <label>3. 作りたいものを選択</label>
     <select id="select-item" disabled>
       <option value="">-- 先にジャンルを選んでください --</option>
     </select>
@@ -172,60 +171,94 @@
       <span class="item-name" id="res-name">-</span>
       <span class="item-level" id="res-level">-</span>
     </div>
-    <ul class="material-list" id="res-materials">
-      <!-- ここに素材が入ります -->
-    </ul>
+    <ul class="material-list" id="res-materials"></ul>
   </div>
 </div>
 
 <script>
-  // --- 職人・アイテム・素材のデータベース ---
+  // --- DQ10 全8職人 データベース ---
   const CRAFT_DATA = {
     "🌳 木工職人": {
       "🏹 弓": [
-        {
-          name: "輝天の弓",
-          level: "装備Lv 115",
-          materials: [
-            { name: "フォレスト鉱石", count: 30 },
-            { name: "デモニウム鉱石", count: 15 },
-            { name: "彩虹のしずく", count: 3 },
-            { name: "超ようせいのひだね", count: 6 }
-          ]
-        },
-        {
-          name: "シェキナーの弓",
-          level: "装備Lv 110",
-          materials: [
-            { name: "マゴニア草", count: 30 },
-            { name: "竜のうろこ", count: 10 },
-            { name: "超ようせいのひだね", count: 5 }
-          ]
-        }
+        { name: "輝天の弓", level: "装備Lv 115", materials: [{ name: "フォレスト鉱石", count: 30 }, { name: "デモニウム鉱石", count: 15 }, { name: "彩虹のしずく", count: 3 }, { name: "超ようせいのひだね", count: 6 }] },
+        { name: "シェキナーの弓", level: "装備Lv 110", materials: [{ name: "マゴニア草", count: 30 }, { name: "竜のうろこ", count: 10 }, { name: "超ようせいのひだね", count: 5 }] },
+        { name: "イルミンズールの弓", level: "装備Lv 100", materials: [{ name: "古代樹の化石", count: 24 }, { name: "大きな貝ガラ", count: 30 }, { name: "ようせいのひだね", count: 16 }] }
       ],
       "🪄 両手杖": [
-        {
-          name: "輝天の杖",
-          level: "装備Lv 115",
-          materials: [
-            { name: "フォレスト鉱石", count: 30 },
-            { name: "古代樹の化石", count: 20 },
-            { name: "超ようせいのひだね", count: 6 }
-          ]
-        }
+        { name: "輝天の杖", level: "装備Lv 115", materials: [{ name: "フォレスト鉱石", count: 30 }, { name: "古代樹の化石", count: 20 }, { name: "超ようせいのひだね", count: 6 }] },
+        { name: "征魔の黒杖", level: "装備Lv 110", materials: [{ name: "マゴニア草", count: 30 }, { name: "暗黒の樹木", count: 40 }, { name: "超ようせいのひだね", count: 5 }] }
+      ],
+      "🧹 スティック": [
+        { name: "輝天のタクト", level: "装備Lv 115", materials: [{ name: "フォレスト鉱石", count: 30 }, { name: "きれいな水", count: 30 }, { name: "超ようせいのひだね", count: 6 }] },
+        { name: "エイルのタクト", level: "装備Lv 110", materials: [{ name: "マゴニア草", count: 30 }, { name: "せい霊のひせき", count: 15 }, { name: "超ようせいのひだね", count: 5 }] }
+      ],
+      "🪭 扇": [
+        { name: "輝天の扇", level: "装備Lv 115", materials: [{ name: "フォレスト鉱石", count: 30 }, { name: "風きりの羽", count: 20 }, { name: "超ようせいのひだね", count: 6 }] },
+        { name: "アロケルのおうぎ", level: "装備Lv 110", materials: [{ name: "マゴニア草", count: 30 }, { name: "妖精の綿花", count: 20 }, { name: "超ようせいのひだね", count: 5 }] }
+      ],
+      "🎣 釣りざお": [
+        { name: "超おたから釣りざお改", level: "職人Lv 45", materials: [{ name: "氷の樹木", count: 20 }, { name: "シャーク肌", count: 5 }, { name: "超ようせいのひだね", count: 4 }] },
+        { name: "氷の釣りざお改", level: "職人Lv 40", materials: [{ name: "氷の樹木", count: 15 }, { name: "プラチナ鉱石", count: 10 }, { name: "ようせいのひだね", count: 8 }] }
       ]
     },
     "⚔️ 武器鍛冶": {
       "🗡️ 片手剣": [
-        {
-          name: "輝天の剣",
-          level: "装備Lv 115",
-          materials: [
-            { name: "デモニウム鉱石", count: 30 },
-            { name: "ほしのすな", count: 20 },
-            { name: "超ようせいのひだね", count: 6 }
-          ]
-        }
+        { name: "輝天の剣", level: "装備Lv 115", materials: [{ name: "デモニウム鉱石", count: 30 }, { name: "ほしのすな", count: 20 }, { name: "超ようせいのひだね", count: 6 }] },
+        { name: "鳴神のつるぎ", level: "装備Lv 110", materials: [{ name: "アセティア鉱石", count: 30 }, { name: "雷竜のつめ", count: 10 }, { name: "超ようせいのひだね", count: 5 }] }
+      ],
+      "⚔️ 両手剣": [
+        { name: "輝天の大剣", level: "装備Lv 115", materials: [{ name: "デモニウム鉱石", count: 35 }, { name: "炎の樹木", count: 20 }, { name: "超ようせいのひだね", count: 6 }] },
+        { name: "炎斬の魔剣", level: "装備Lv 110", materials: [{ name: "アセティア鉱石", count: 30 }, { name: "溶岩のカケラ", count: 20 }, { name: "超ようせいのひだね", count: 5 }] }
+      ],
+      "🪓 オノ / ハンマー": [
+        { name: "輝天のオノ", level: "装備Lv 115", materials: [{ name: "デモニウム鉱石", count: 30 }, { name: "鉄鉱石", count: 50 }, { name: "超ようせいのひだね", count: 6 }] }
+      ]
+    },
+    "🛡️ 防具鍛冶": {
+      "🛡️ 盾": [
+        { name: "輝天の盾", level: "装備Lv 115", materials: [{ name: "デモニウム鉱石", count: 25 }, { name: "プラチナ鉱石", count: 20 }, { name: "超ようせいのひだね", count: 5 }] },
+        { name: "不滅のゆみに", level: "装備Lv 110", materials: [{ name: "アセティア鉱石", count: 25 }, { name: "銀の鉱石", count: 30 }, { name: "超ようせいのひだね", count: 4 }] }
+      ],
+      "🦺 鎧（からだ上）": [
+        { name: "魔衛隊のよろい上", level: "装備Lv 115", materials: [{ name: "デモニウム鉱石", count: 35 }, { name: "大きなホネ", count: 20 }, { name: "超ようせいのひだね", count: 6 }] }
+      ]
+    },
+    "🧵 さいほう": {
+      "🥋 ローブ": [
+        { name: "ロードリーコンボイ", level: "装備Lv 115", materials: [{ name: "シルク草", count: 40 }, { name: "妖精の綿花", count: 20 }, { name: "あまつのミスト", count: 6 }] },
+        { name: "ワンダラーズの服", level: "装備Lv 110", materials: [{ name: "コットン草", count: 35 }, { name: "うるわしローズ", count: 15 }, { name: "あまつのミスト", count: 5 }] }
+      ],
+      "🧢 帽子・あたま": [
+        { name: "ロードリーハット", level: "装備Lv 115", materials: [{ name: "シルク草", count: 30 }, { name: "ふわふわ花", count: 10 }, { name: "あまつのミスト", count: 5 }] }
+      ]
+    },
+    "🔨 道具鍛冶": {
+      "🛠️ 職人道具": [
+        { name: "超かがやきそう", level: "職人Lv 50", materials: [{ name: "プラチナ鉱石", count: 30 }, { name: "ようせいの粉", count: 20 }, { name: "超ようせいのひだね", count: 5 }] },
+        { name: "光の鍛冶ハンマー", level: "職人Lv 45", materials: [{ name: "マデュライト", count: 20 }, { name: "大きな金属", count: 10 }, { name: "ようせいのひだね", count: 10 }] }
+      ],
+      "🎣 ルアー": [
+        { name: "天使のルアー", level: "職人Lv 40", materials: [{ name: "プラチナ鉱石", count: 10 }, { name: "天使のすず", count: 5 }, { name: "ようせいのひだね", count: 6 }] },
+        { name: "トゲトゲルアー", level: "職人Lv 35", materials: [{ name: "ぎんのこうせき", count: 12 }, { name: "てっこうせき", count: 10 }, { name: "ようせいのひだね", count: 4 }] }
+      ]
+    },
+    "🍳 調理職人": {
+      "🍲 料理": [
+        { name: "バトルパッツァ", level: "職人Lv 40", materials: [{ name: "しもふりにく", count: 3 }, { name: "ピリからゼリー", count: 2 }, { name: "デリシャスオイル", count: 12 }] },
+        { name: "ストームタルト", level: "職人Lv 35", materials: [{ name: "シャインフルーツ", count: 4 }, { name: "ライスフラワー", count: 6 }, { name: "デリシャスオイル", count: 8 }] },
+        { name: "スマッシュポテト", level: "職人Lv 30", materials: [{ name: "ジャンボポテト", count: 5 }, { name: "ピュアスノー", count: 3 }, { name: "デリシャスオイル", count: 6 }] }
+      ]
+    },
+    "🏺 ツボ錬金": {
+      "💥 攻撃・会心効果": [
+        { name: "こうげき力 +6 (成功)", level: "錬金Lv 40", materials: [{ name: "ちからのゆびわ", count: 1 }, { name: "ようせいの毒薬", count: 5 }, { name: "汗と涙の結晶", count: 10 }] },
+        { name: "かいしん率 +1.4%", level: "錬金Lv 35", materials: [{ name: "小さなホネ", count: 10 }, { name: "汗と涙の結晶", count: 8 }] }
+      ]
+    },
+    "🔮 ランプ錬金": {
+      "⚡ 耐性・速度効果": [
+        { name: "呪文発動速度 +6%", level: "錬金Lv 40", materials: [{ name: "いつくしみのほむら", count: 2 }, { name: "汗と涙の結晶", count: 10 }] },
+        { name: "呪文耐性 +5%", level: "錬金Lv 35", materials: [{ name: "みずのこうせき", count: 5 }, { name: "汗と涙の結晶", count: 8 }] }
       ]
     }
   };
@@ -235,7 +268,7 @@
   const selectItem = document.getElementById("select-item");
   const resultCard = document.getElementById("result-card");
 
-  // 初期化：職人一覧をセット
+  // 初期化：8職人をセット
   for (let job in CRAFT_DATA) {
     let opt = document.createElement("option");
     opt.value = job;
@@ -243,7 +276,7 @@
     selectJob.appendChild(opt);
   }
 
-  // 1. 職人が選ばれたとき
+  // 1. 職人選択時
   selectJob.onchange = () => {
     selectCategory.innerHTML = '<option value="">-- ジャンルを選択 --</option>';
     selectItem.innerHTML = '<option value="">-- 先にジャンルを選んでください --</option>';
@@ -266,7 +299,7 @@
     selectCategory.disabled = false;
   };
 
-  // 2. ジャンルが選ばれたとき
+  // 2. ジャンル選択時
   selectCategory.onchange = () => {
     selectItem.innerHTML = '<option value="">-- 作りたいものを選ぶ --</option>';
     resultCard.style.display = "none";
@@ -288,7 +321,7 @@
     selectItem.disabled = false;
   };
 
-  // 3. アイテムが選ばれたとき（素材を表示）
+  // 3. アイテム選択時（結果表示）
   selectItem.onchange = () => {
     const job = selectJob.value;
     const cat = selectCategory.value;
