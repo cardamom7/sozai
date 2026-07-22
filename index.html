@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>DQ10 職人素材・原価＆利益チェッカー</title>
+  <title>DQ10職人素材 原価＆利益チェッカー</title>
   <style>
     * {
       box-sizing: border-box;
@@ -13,34 +13,35 @@
     }
 
     body {
-      font-family: "Hiragino Sans", "Meiryo", sans-serif;
-      background: #12161f;
-      color: #d1d5db;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      padding: 16px;
+      padding: 16px 12px;
     }
 
     .container {
       width: 100%;
-      max-width: 500px;
-      background: #1a202c;
-      border: 1px solid #2d3748;
+      max-width: 480px;
+      background: #1e293b;
       border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      padding: 20px 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     }
 
-    /* メインタイトルのみアクセントカラー */
+    /* タイトル：絵文字削除・指定位置で改行 */
     h1 {
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       text-align: center;
-      color: #38bdf8; /* 見出しカラー：爽やかなブルー */
+      color: #38bdf8;
       margin-bottom: 20px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid #2d3748;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #334155;
+      line-height: 1.4;
+      font-weight: bold;
       letter-spacing: 0.5px;
     }
 
@@ -50,13 +51,13 @@
 
     label {
       display: block;
-      font-size: 0.85rem;
-      color: #9ca3af;
+      font-size: 0.8rem;
+      color: #94a3b8;
       margin-bottom: 6px;
       font-weight: 600;
     }
 
-    /* iOS等の自動ズームを防ぐため font-size: 16px を指定 */
+    /* スマホ自動ズーム防止 (font-size: 16px 必須) */
     select, input {
       font-size: 16px !important;
     }
@@ -67,8 +68,10 @@
       background: #0f172a;
       border: 1px solid #334155;
       border-radius: 8px;
-      color: #f3f4f6;
+      color: #f8fafc;
       outline: none;
+      appearance: none;
+      -webkit-appearance: none;
     }
 
     select:focus {
@@ -76,17 +79,15 @@
     }
 
     select:disabled {
-      opacity: 0.4;
+      opacity: 0.35;
       cursor: not-allowed;
     }
 
-    /* 結果カード */
+    /* 結果エリア */
     .result-card {
       margin-top: 20px;
-      background: #0f172a;
-      border-radius: 10px;
-      padding: 16px;
-      border: 1px solid #1e293b;
+      padding-top: 16px;
+      border-top: 1px solid #334155;
       display: none;
     }
 
@@ -94,32 +95,31 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid #1e293b;
+      margin-bottom: 14px;
     }
 
     .item-name {
       font-size: 1.1rem;
       font-weight: bold;
-      color: #f3f4f6;
+      color: #f8fafc;
     }
 
     .item-level {
       font-size: 0.75rem;
-      background: #1e293b;
+      color: #94a3b8;
+      background: #0f172a;
       padding: 2px 8px;
       border-radius: 4px;
-      color: #9ca3af;
     }
 
     .material-list {
       list-style: none;
+      margin-bottom: 16px;
     }
 
     .material-item {
       padding: 10px 0;
-      border-bottom: 1px solid #1e293b;
+      border-bottom: 1px solid #334155;
     }
 
     .material-item:last-child {
@@ -135,26 +135,25 @@
 
     .mat-name {
       font-size: 0.9rem;
-      color: #e5e7eb;
+      color: #cbd5e1;
     }
 
     .mat-count {
-      font-size: 0.9rem;
-      font-weight: bold;
-      color: #9ca3af;
+      font-size: 0.85rem;
+      color: #94a3b8;
     }
 
     .mat-detail {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       font-size: 0.75rem;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .badge {
       padding: 1px 6px;
-      border-radius: 4px;
+      border-radius: 3px;
       font-size: 0.7rem;
       font-weight: 600;
     }
@@ -170,7 +169,7 @@
     }
 
     .shop-info {
-      color: #6b7280;
+      color: #64748b;
     }
 
     /* 価格入力フォーム */
@@ -178,7 +177,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: #1e293b;
+      background: #0f172a;
       padding: 6px 10px;
       border-radius: 6px;
     }
@@ -191,110 +190,98 @@
 
     .calc-input-group label {
       margin-bottom: 0;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
+      color: #64748b;
     }
 
     .price-input {
-      width: 95px;
+      width: 90px;
       padding: 4px 8px;
-      background: #0f172a;
+      background: #1e293b;
       border: 1px solid #334155;
       border-radius: 4px;
-      color: #f3f4f6;
+      color: #f8fafc;
       text-align: right;
     }
 
     .price-input:disabled {
-      background: #1a202c;
-      color: #6b7280;
-      border-color: #1e293b;
+      background: #0f172a;
+      color: #64748b;
+      border-color: transparent;
     }
 
     .subtotal {
       font-size: 0.85rem;
       color: #cbd5e1;
+      font-weight: 600;
     }
 
-    /* 原価表示 */
-    .total-card {
-      margin-top: 14px;
-      background: #1e293b;
+    /* まとめカード */
+    .summary-card {
+      background: #0f172a;
       border-radius: 8px;
-      padding: 10px 14px;
+      padding: 14px;
+    }
+
+    .summary-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 12px;
     }
 
-    .total-title {
+    .summary-label {
       font-size: 0.85rem;
-      color: #9ca3af;
+      color: #94a3b8;
     }
 
     .total-price {
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: bold;
-      color: #f3f4f6;
+      color: #f8fafc;
     }
 
-    /* 利益計算エリア */
-    .sale-card {
-      margin-top: 10px;
-      background: #0f172a;
-      border: 1px solid #334155;
-      border-radius: 8px;
-      padding: 12px 14px;
+    .sale-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 8px;
     }
 
-    .sale-title {
-      font-size: 0.85rem;
-      font-weight: bold;
-      color: #38bdf8; /* 見出しカラー */
-      margin-bottom: 8px;
-    }
-
-    .sale-input-group {
+    .sale-input-wrap {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      margin-bottom: 4px;
-    }
-
-    .sale-input-group label {
-      margin-bottom: 0;
-      color: #d1d5db;
-      font-size: 0.85rem;
+      gap: 4px;
     }
 
     .sale-input {
-      width: 120px;
+      width: 110px;
       border-color: #334155;
     }
 
     .fee-note {
       font-size: 0.7rem;
-      color: #6b7280;
+      color: #64748b;
       text-align: right;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
     }
 
     .profit-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-top: 8px;
+      padding-top: 12px;
       border-top: 1px solid #1e293b;
     }
 
     .profit-title {
       font-size: 0.9rem;
       font-weight: bold;
-      color: #f3f4f6;
+      color: #f8fafc;
     }
 
-    /* 利益金額（ここだけ目立つように色を残す） */
     .profit-price {
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       font-weight: bold;
       color: #4ade80;
     }
@@ -303,7 +290,8 @@
 <body>
 
 <div class="container">
-  <h1>🛡️ DQ10 職人素材・原価＆利益チェッカー</h1>
+  <!-- 指定通り改行したタイトル -->
+  <h1>DQ10職人素材<br>原価＆利益チェッカー</h1>
 
   <!-- 1. 職人選択 -->
   <div class="form-group">
@@ -339,23 +327,21 @@
     <!-- 素材リスト -->
     <ul class="material-list" id="res-materials"></ul>
 
-    <!-- 合計原価 -->
-    <div class="total-card">
-      <span class="total-title">必要原価（合計）</span>
-      <span class="total-price" id="total-price">0 G</span>
-    </div>
+    <!-- 計算まとめカード -->
+    <div class="summary-card">
+      <div class="summary-row">
+        <span class="summary-label">必要原価（合計）</span>
+        <span class="total-price" id="total-price">0 G</span>
+      </div>
 
-    <!-- 利益計算エリア -->
-    <div class="sale-card">
-      <div class="sale-title">利益シミュレーション</div>
-      <div class="sale-input-group">
-        <label>販売予定価格:</label>
-        <div>
+      <div class="sale-row">
+        <span class="summary-label">販売予定価格</span>
+        <div class="sale-input-wrap">
           <input type="number" class="price-input sale-input" id="sale-price-input" placeholder="例: 200000" oninput="calculateTotal()">
-          <span style="font-size: 0.85rem;"> G</span>
+          <span style="font-size: 0.8rem; color: #94a3b8;">G</span>
         </div>
       </div>
-      <div class="fee-note">※バザー手数料（5%）差し引き後</div>
+      <div class="fee-note">※バザー手数料（5%）自動引算</div>
 
       <div class="profit-row">
         <span class="profit-title">見込み純利益</span>
@@ -366,10 +352,10 @@
 </div>
 
 <script>
-  // --- DQ10 データベース（木工・さいほう・調理・ランプに限定＆拡充） ---
+  // --- DQ10 データベース（木工・さいほう・調理・ランプ） ---
   const CRAFT_DATA = {
-    "🌳 木工職人": {
-      "🏹 弓": [
+    "木工職人": {
+      "弓": [
         {
           name: "輝天の弓",
           level: "装備Lv 115",
@@ -399,7 +385,7 @@
           ]
         }
       ],
-      "🪄 両手杖": [
+      "両手杖": [
         {
           name: "輝天の杖",
           level: "装備Lv 115",
@@ -419,7 +405,7 @@
           ]
         }
       ],
-      "🎣 釣り道具": [
+      "釣り道具": [
         {
           name: "氷の釣りざお改",
           level: "職人Lv 40",
@@ -450,8 +436,8 @@
         }
       ]
     },
-    "🧵 さいほう職人": {
-      "🥋 からだ上": [
+    "さいほう職人": {
+      "からだ上": [
         {
           name: "ロードリーコンボイ",
           level: "装備Lv 115",
@@ -472,7 +458,7 @@
           ]
         }
       ],
-      "🧢 あたま": [
+      "あたま": [
         {
           name: "ロードリーハット",
           level: "装備Lv 115",
@@ -483,7 +469,7 @@
           ]
         }
       ],
-      "👖 からだ下": [
+      "からだ下": [
         {
           name: "ロードリーローブ下",
           level: "装備Lv 115",
@@ -495,8 +481,8 @@
         }
       ]
     },
-    "🍳 調理職人": {
-      "🍲 バフ料理": [
+    "調理職人": {
+      "バフ料理": [
         {
           name: "バトルパッツァ",
           level: "職人Lv 40",
@@ -544,8 +530,8 @@
         }
       ]
     },
-    "🔮 ランプ錬金": {
-      "⚡ 呪文・発動速度": [
+    "ランプ錬金職人": {
+      "呪文・発動速度": [
         {
           name: "呪文発動速度 +6% (成功)",
           level: "錬金Lv 40",
@@ -556,7 +542,7 @@
           ]
         }
       ],
-      "🛡️ 属性・呪文耐性": [
+      "属性・呪文耐性": [
         {
           name: "呪文攻撃耐性 +7% (成功)",
           level: "錬金Lv 40",
@@ -567,7 +553,7 @@
           ]
         }
       ],
-      "🎯 会心・攻撃": [
+      "会心・攻撃": [
         {
           name: "かいしん率 +1.4% (成功)",
           level: "錬金Lv 40",
@@ -729,10 +715,10 @@
 
       if (profit >= 0) {
         profitEl.innerText = `+${profit.toLocaleString()} G`;
-        profitEl.style.color = "#4ade80"; // 黒字：グリーン
+        profitEl.style.color = "#4ade80"; // 黒字
       } else {
         profitEl.innerText = `${profit.toLocaleString()} G`;
-        profitEl.style.color = "#f87171"; // 赤字：レッド
+        profitEl.style.color = "#f87171"; // 赤字
       }
     } else {
       profitEl.innerText = "0 G";
