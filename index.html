@@ -1,1 +1,324 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>DQ10 職人必要素材チェッカー</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      touch-action: manipulation;
+    }
 
+    body {
+      font-family: "Hiragino Sans", "Meiryo", sans-serif;
+      background: #0f141d;
+      color: #e0e6ed;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 16px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      background: #1a2230;
+      border: 2px solid #d4af37;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    h1 {
+      font-size: 1.3rem;
+      text-align: center;
+      color: #f39c12;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #334155;
+      letter-spacing: 1px;
+    }
+
+    /* 絞り込みフォーム */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      color: #94a3b8;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    select {
+      width: 100%;
+      padding: 12px;
+      background: #0f172a;
+      border: 1px solid #475569;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    select:focus {
+      border-color: #f39c12;
+    }
+
+    select:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* 素材表示エリア */
+    .result-card {
+      margin-top: 24px;
+      background: #0f172a;
+      border-radius: 12px;
+      padding: 16px;
+      border: 1px solid #334155;
+      display: none;
+    }
+
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed #334155;
+    }
+
+    .item-name {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #5eead4;
+    }
+
+    .item-level {
+      font-size: 0.8rem;
+      background: #1e293b;
+      padding: 2px 8px;
+      border-radius: 12px;
+      color: #cbd5e1;
+    }
+
+    .material-list {
+      list-style: none;
+    }
+
+    .material-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    .material-item:last-child {
+      border-bottom: none;
+    }
+
+    .mat-name {
+      font-size: 0.95rem;
+    }
+
+    .mat-count {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #f39c12;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🛡️ 職人必要素材チェッカー</h1>
+
+  <!-- 1. 職人選択 -->
+  <div class="form-group">
+    <label>1. 職人を選ぶ</label>
+    <select id="select-job">
+      <option value="">-- 職人を選択 --</option>
+    </select>
+  </div>
+
+  <!-- 2. ジャンル選択 -->
+  <div class="form-group">
+    <label>2. ジャンルを選ぶ</label>
+    <select id="select-category" disabled>
+      <option value="">-- 先に職人を選んでください --</option>
+    </select>
+  </div>
+
+  <!-- 3. アイテム選択 -->
+  <div class="form-group">
+    <label>3. 作りたいものを探す</label>
+    <select id="select-item" disabled>
+      <option value="">-- 先にジャンルを選んでください --</option>
+    </select>
+  </div>
+
+  <!-- 結果表示エリア -->
+  <div class="result-card" id="result-card">
+    <div class="result-header">
+      <span class="item-name" id="res-name">-</span>
+      <span class="item-level" id="res-level">-</span>
+    </div>
+    <ul class="material-list" id="res-materials">
+      <!-- ここに素材が入ります -->
+    </ul>
+  </div>
+</div>
+
+<script>
+  // --- 職人・アイテム・素材のデータベース ---
+  const CRAFT_DATA = {
+    "🌳 木工職人": {
+      "🏹 弓": [
+        {
+          name: "輝天の弓",
+          level: "装備Lv 115",
+          materials: [
+            { name: "フォレスト鉱石", count: 30 },
+            { name: "デモニウム鉱石", count: 15 },
+            { name: "彩虹のしずく", count: 3 },
+            { name: "超ようせいのひだね", count: 6 }
+          ]
+        },
+        {
+          name: "シェキナーの弓",
+          level: "装備Lv 110",
+          materials: [
+            { name: "マゴニア草", count: 30 },
+            { name: "竜のうろこ", count: 10 },
+            { name: "超ようせいのひだね", count: 5 }
+          ]
+        }
+      ],
+      "🪄 両手杖": [
+        {
+          name: "輝天の杖",
+          level: "装備Lv 115",
+          materials: [
+            { name: "フォレスト鉱石", count: 30 },
+            { name: "古代樹の化石", count: 20 },
+            { name: "超ようせいのひだね", count: 6 }
+          ]
+        }
+      ]
+    },
+    "⚔️ 武器鍛冶": {
+      "🗡️ 片手剣": [
+        {
+          name: "輝天の剣",
+          level: "装備Lv 115",
+          materials: [
+            { name: "デモニウム鉱石", count: 30 },
+            { name: "ほしのすな", count: 20 },
+            { name: "超ようせいのひだね", count: 6 }
+          ]
+        }
+      ]
+    }
+  };
+
+  const selectJob = document.getElementById("select-job");
+  const selectCategory = document.getElementById("select-category");
+  const selectItem = document.getElementById("select-item");
+  const resultCard = document.getElementById("result-card");
+
+  // 初期化：職人一覧をセット
+  for (let job in CRAFT_DATA) {
+    let opt = document.createElement("option");
+    opt.value = job;
+    opt.innerText = job;
+    selectJob.appendChild(opt);
+  }
+
+  // 1. 職人が選ばれたとき
+  selectJob.onchange = () => {
+    selectCategory.innerHTML = '<option value="">-- ジャンルを選択 --</option>';
+    selectItem.innerHTML = '<option value="">-- 先にジャンルを選んでください --</option>';
+    selectItem.disabled = true;
+    resultCard.style.display = "none";
+
+    const job = selectJob.value;
+    if (!job) {
+      selectCategory.disabled = true;
+      return;
+    }
+
+    const categories = CRAFT_DATA[job];
+    for (let cat in categories) {
+      let opt = document.createElement("option");
+      opt.value = cat;
+      opt.innerText = cat;
+      selectCategory.appendChild(opt);
+    }
+    selectCategory.disabled = false;
+  };
+
+  // 2. ジャンルが選ばれたとき
+  selectCategory.onchange = () => {
+    selectItem.innerHTML = '<option value="">-- 作りたいものを選ぶ --</option>';
+    resultCard.style.display = "none";
+
+    const job = selectJob.value;
+    const cat = selectCategory.value;
+    if (!cat) {
+      selectItem.disabled = true;
+      return;
+    }
+
+    const items = CRAFT_DATA[job][cat];
+    items.forEach((item, index) => {
+      let opt = document.createElement("option");
+      opt.value = index;
+      opt.innerText = item.name;
+      selectItem.appendChild(opt);
+    });
+    selectItem.disabled = false;
+  };
+
+  // 3. アイテムが選ばれたとき（素材を表示）
+  selectItem.onchange = () => {
+    const job = selectJob.value;
+    const cat = selectCategory.value;
+    const idx = selectItem.value;
+
+    if (idx === "") {
+      resultCard.style.display = "none";
+      return;
+    }
+
+    const item = CRAFT_DATA[job][cat][idx];
+    document.getElementById("res-name").innerText = item.name;
+    document.getElementById("res-level").innerText = item.level;
+
+    const listEl = document.getElementById("res-materials");
+    listEl.innerHTML = "";
+
+    item.materials.forEach(mat => {
+      let li = document.createElement("li");
+      li.className = "material-item";
+      li.innerHTML = `
+        <span class="mat-name">・${mat.name}</span>
+        <span class="mat-count">× ${mat.count} 個</span>
+      `;
+      listEl.appendChild(li);
+    });
+
+    resultCard.style.display = "block";
+  };
+</script>
+
+</body>
+</html>
