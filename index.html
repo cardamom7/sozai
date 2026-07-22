@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>DQ10 職人素材＆原価計算チェッカー</title>
+  <title>DQ10 職人素材・原価＆利益チェッカー</title>
   <style>
     * {
       box-sizing: border-box;
@@ -192,7 +192,7 @@
     }
 
     .price-input {
-      width: 90px;
+      width: 100px;
       padding: 6px 8px;
       background: #0f172a;
       border: 1px solid #475569;
@@ -215,11 +215,11 @@
       font-weight: bold;
     }
 
-    /* 合計金額エリア */
+    /* 合計原価エリア */
     .total-card {
       margin-top: 16px;
       background: #1e1b4b;
-      border: 2px solid #6366f1;
+      border: 1px solid #6366f1;
       border-radius: 10px;
       padding: 12px 16px;
       display: flex;
@@ -228,22 +228,84 @@
     }
 
     .total-title {
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: bold;
       color: #c7d2fe;
     }
 
     .total-price {
-      font-size: 1.4rem;
+      font-size: 1.2rem;
       font-weight: bold;
       color: #ffd700;
+    }
+
+    /* 利益計算エリア */
+    .sale-card {
+      margin-top: 12px;
+      background: #111827;
+      border: 2px solid #3b82f6;
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+
+    .sale-title {
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: #93c5fd;
+      margin-bottom: 8px;
+    }
+
+    .sale-input-group {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .sale-input-group label {
+      margin-bottom: 0;
+      color: #cbd5e1;
+      font-size: 0.85rem;
+    }
+
+    .sale-input {
+      width: 130px;
+      font-size: 1rem;
+      border-color: #3b82f6;
+    }
+
+    .fee-note {
+      font-size: 0.72rem;
+      color: #64748b;
+      text-align: right;
+      margin-bottom: 10px;
+    }
+
+    .profit-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 8px;
+      border-top: 1px dashed #374151;
+    }
+
+    .profit-title {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .profit-price {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #4ade80;
     }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <h1>🛡️ DQ10 職人素材＆原価チェッカー</h1>
+  <h1>🛡️ DQ10 職人素材・原価＆利益チェッカー</h1>
 
   <!-- 1. 職人選択 -->
   <div class="form-group">
@@ -276,12 +338,31 @@
       <span class="item-level" id="res-level">-</span>
     </div>
 
+    <!-- 素材リスト -->
     <ul class="material-list" id="res-materials"></ul>
 
     <!-- 合計原価 -->
     <div class="total-card">
-      <span class="total-title">💰 推定作成原価</span>
+      <span class="total-title">💰 必要原価（合計）</span>
       <span class="total-price" id="total-price">0 G</span>
+    </div>
+
+    <!-- 利益計算エリア -->
+    <div class="sale-card">
+      <div class="sale-title">📊 利益シミュレーション</div>
+      <div class="sale-input-group">
+        <label>完成品の販売予定価格:</label>
+        <div>
+          <input type="number" class="price-input sale-input" id="sale-price-input" placeholder="例: 200000" oninput="calculateTotal()">
+          <span style="font-size: 0.85rem;"> G</span>
+        </div>
+      </div>
+      <div class="fee-note">※バザー手数料（5%）を引いた額で計算</div>
+
+      <div class="profit-row">
+        <span class="profit-title">✨ 見込み利益</span>
+        <span class="profit-price" id="profit-price">0 G</span>
+      </div>
     </div>
   </div>
 </div>
@@ -440,7 +521,7 @@
   const selectItem = document.getElementById("select-item");
   const resultCard = document.getElementById("result-card");
 
-  // 初期化：職人一覧をセット
+  // 初期化：職人一覧
   for (let job in CRAFT_DATA) {
     let opt = document.createElement("option");
     opt.value = job;
@@ -493,7 +574,7 @@
     selectItem.disabled = false;
   };
 
-  // 3. アイテム選択時（表示＆計算処理）
+  // 3. アイテム選択時
   selectItem.onchange = () => {
     const job = selectJob.value;
     const cat = selectCategory.value;
@@ -503,6 +584,9 @@
       resultCard.style.display = "none";
       return;
     }
+
+    // 売価入力欄の初期化
+    document.getElementById("sale-price-input").value = "";
 
     const item = CRAFT_DATA[job][cat][idx];
     document.getElementById("res-name").innerText = item.name;
@@ -546,7 +630,7 @@
     calculateTotal();
   };
 
-  // 原価の自動計算関数
+  // 自動計算処理（原価＆利益）
   function calculateTotal() {
     const job = selectJob.value;
     const cat = selectCategory.value;
@@ -557,6 +641,7 @@
     const item = CRAFT_DATA[job][cat][idx];
     let grandTotal = 0;
 
+    // 原価計算
     item.materials.forEach((mat, i) => {
       const inputEl = document.getElementById(`price-${i}`);
       const price = parseFloat(inputEl.value) || 0;
@@ -567,6 +652,28 @@
     });
 
     document.getElementById("total-price").innerText = `${grandTotal.toLocaleString()} G`;
+
+    // 利益計算
+    const saleInput = document.getElementById("sale-price-input");
+    const salePrice = parseFloat(saleInput.value) || 0;
+    const profitEl = document.getElementById("profit-price");
+
+    if (salePrice > 0) {
+      // バザー手数料（5%）を引いた実収入
+      const actualIncome = Math.floor(salePrice * 0.95);
+      const profit = actualIncome - grandTotal;
+
+      if (profit >= 0) {
+        profitEl.innerText = `+${profit.toLocaleString()} G`;
+        profitEl.style.color = "#4ade80"; // 黒字：緑
+      } else {
+        profitEl.innerText = `${profit.toLocaleString()} G`;
+        profitEl.style.color = "#f87171"; // 赤字：赤
+      }
+    } else {
+      profitEl.innerText = "0 G";
+      profitEl.style.color = "#4ade80";
+    }
   }
 </script>
 
