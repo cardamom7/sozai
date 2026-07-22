@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>DQ10 全職人・店舗＆価格付き素材チェッカー</title>
+  <title>DQ10 職人素材＆原価計算チェッカー</title>
   <style>
     * {
       box-sizing: border-box;
@@ -78,7 +78,7 @@
 
     /* 結果カード */
     .result-card {
-      margin-top: 24px;
+      margin-top: 20px;
       background: #0f172a;
       border-radius: 12px;
       padding: 16px;
@@ -114,7 +114,7 @@
     }
 
     .material-item {
-      padding: 10px 0;
+      padding: 12px 0;
       border-bottom: 1px solid #1e293b;
     }
 
@@ -135,7 +135,7 @@
     }
 
     .mat-count {
-      font-size: 1.05rem;
+      font-size: 0.95rem;
       font-weight: bold;
       color: #f39c12;
     }
@@ -146,6 +146,7 @@
       gap: 8px;
       font-size: 0.82rem;
       flex-wrap: wrap;
+      margin-bottom: 8px;
     }
 
     .badge {
@@ -169,16 +170,80 @@
       color: #94a3b8;
     }
 
-    .shop-price {
+    /* 価格入力フォーム */
+    .calc-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #1e293b;
+      padding: 6px 10px;
+      border-radius: 8px;
+    }
+
+    .calc-input-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .calc-input-group label {
+      margin-bottom: 0;
+      font-size: 0.8rem;
+    }
+
+    .price-input {
+      width: 90px;
+      padding: 6px 8px;
+      background: #0f172a;
+      border: 1px solid #475569;
+      border-radius: 6px;
       color: #ffd700;
       font-weight: bold;
+      text-align: right;
+      font-size: 0.9rem;
+    }
+
+    .price-input:disabled {
+      background: #1a2230;
+      color: #94a3b8;
+      border-color: #334155;
+    }
+
+    .subtotal {
+      font-size: 0.9rem;
+      color: #e2e8f0;
+      font-weight: bold;
+    }
+
+    /* 合計金額エリア */
+    .total-card {
+      margin-top: 16px;
+      background: #1e1b4b;
+      border: 2px solid #6366f1;
+      border-radius: 10px;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .total-title {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #c7d2fe;
+    }
+
+    .total-price {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #ffd700;
     }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <h1>🛡️ DQ10 職人必要素材チェッカー</h1>
+  <h1>🛡️ DQ10 職人素材＆原価チェッカー</h1>
 
   <!-- 1. 職人選択 -->
   <div class="form-group">
@@ -204,18 +269,25 @@
     </select>
   </div>
 
-  <!-- 結果表示エリア -->
+  <!-- 結果表示＆計算エリア -->
   <div class="result-card" id="result-card">
     <div class="result-header">
       <span class="item-name" id="res-name">-</span>
       <span class="item-level" id="res-level">-</span>
     </div>
+
     <ul class="material-list" id="res-materials"></ul>
+
+    <!-- 合計原価 -->
+    <div class="total-card">
+      <span class="total-title">💰 推定作成原価</span>
+      <span class="total-price" id="total-price">0 G</span>
+    </div>
   </div>
 </div>
 
 <script>
-  // --- DQ10 全職人 データベース（店舗・価格情報付き） ---
+  // --- DQ10 データベース（目安価格・店舗情報付き） ---
   const CRAFT_DATA = {
     "🌳 木工職人": {
       "🏹 弓": [
@@ -223,19 +295,19 @@
           name: "輝天の弓",
           level: "装備Lv 115",
           materials: [
-            { name: "フォレスト鉱石", count: 30, shop: "バザー" },
-            { name: "デモニウム鉱石", count: 15, shop: "バザー" },
-            { name: "彩虹のしずく", count: 3, shop: "バザー" },
-            { name: "超ようせいのひだね", count: 6, shop: "バザー" }
+            { name: "フォレスト鉱石", count: 30, shop: "バザー", defaultPrice: 14000 },
+            { name: "デモニウム鉱石", count: 15, shop: "バザー", defaultPrice: 8000 },
+            { name: "彩虹のしずく", count: 3, shop: "バザー", defaultPrice: 22000 },
+            { name: "超ようせいのひだね", count: 6, shop: "バザー", defaultPrice: 32000 }
           ]
         },
         {
           name: "イルミンズールの弓",
           level: "装備Lv 100",
           materials: [
-            { name: "古代樹の化石", count: 24, shop: "バザー" },
-            { name: "大きな貝ガラ", count: 30, shop: "店", place: "ジュレット素材屋", price: "240G" },
-            { name: "ようせいのひだね", count: 16, shop: "店", place: "各ギルド素材屋", price: "1,000G" }
+            { name: "古代樹の化石", count: 24, shop: "バザー", defaultPrice: 8500 },
+            { name: "大きな貝ガラ", count: 30, shop: "店", place: "ジュレット素材屋", price: 240 },
+            { name: "ようせいのひだね", count: 16, shop: "店", place: "各ギルド素材屋", price: 1000 }
           ]
         }
       ],
@@ -244,9 +316,9 @@
           name: "輝天の杖",
           level: "装備Lv 115",
           materials: [
-            { name: "フォレスト鉱石", count: 30, shop: "バザー" },
-            { name: "古代樹の化石", count: 20, shop: "バザー" },
-            { name: "超ようせいのひだね", count: 6, shop: "バザー" }
+            { name: "フォレスト鉱石", count: 30, shop: "バザー", defaultPrice: 14000 },
+            { name: "古代樹の化石", count: 20, shop: "バザー", defaultPrice: 8500 },
+            { name: "超ようせいのひだね", count: 6, shop: "バザー", defaultPrice: 32000 }
           ]
         }
       ],
@@ -255,9 +327,9 @@
           name: "氷の釣りざお改",
           level: "職人Lv 40",
           materials: [
-            { name: "氷の樹木", count: 15, shop: "バザー" },
-            { name: "プラチナ鉱石", count: 10, shop: "店", place: "住宅村・素材屋", price: "360G" },
-            { name: "ようせいのひだね", count: 8, shop: "店", place: "各ギルド素材屋", price: "1,000G" }
+            { name: "氷の樹木", count: 15, shop: "バザー", defaultPrice: 350 },
+            { name: "プラチナ鉱石", count: 10, shop: "店", place: "住宅村・素材屋", price: 360 },
+            { name: "ようせいのひだね", count: 8, shop: "店", place: "各ギルド素材屋", price: 1000 }
           ]
         }
       ]
@@ -268,9 +340,9 @@
           name: "輝天の剣",
           level: "装備Lv 115",
           materials: [
-            { name: "デモニウム鉱石", count: 30, shop: "バザー" },
-            { name: "ほしのすな", count: 20, shop: "店", place: "各素材屋", price: "120G" },
-            { name: "超ようせいのひだね", count: 6, shop: "バザー" }
+            { name: "デモニウム鉱石", count: 30, shop: "バザー", defaultPrice: 8000 },
+            { name: "ほしのすな", count: 20, shop: "店", place: "各素材屋", price: 120 },
+            { name: "超ようせいのひだね", count: 6, shop: "バザー", defaultPrice: 32000 }
           ]
         }
       ]
@@ -281,9 +353,9 @@
           name: "輝天の盾",
           level: "装備Lv 115",
           materials: [
-            { name: "デモニウム鉱石", count: 25, shop: "バザー" },
-            { name: "プラチナ鉱石", count: 20, shop: "店", place: "住宅村・素材屋", price: "360G" },
-            { name: "超ようせいのひだね", count: 5, shop: "バザー" }
+            { name: "デモニウム鉱石", count: 25, shop: "バザー", defaultPrice: 8000 },
+            { name: "プラチナ鉱石", count: 20, shop: "店", place: "住宅村・素材屋", price: 360 },
+            { name: "超ようせいのひだね", count: 5, shop: "バザー", defaultPrice: 32000 }
           ]
         }
       ]
@@ -294,9 +366,9 @@
           name: "ロードリーコンボイ",
           level: "装備Lv 115",
           materials: [
-            { name: "シルク草", count: 40, shop: "店", place: "各素材屋", price: "240G" },
-            { name: "妖精の綿花", count: 20, shop: "バザー" },
-            { name: "あまつのミスト", count: 6, shop: "バザー" }
+            { name: "シルク草", count: 40, shop: "店", place: "各素材屋", price: 240 },
+            { name: "妖精の綿花", count: 20, shop: "バザー", defaultPrice: 1800 },
+            { name: "あまつのミスト", count: 6, shop: "バザー", defaultPrice: 15000 }
           ]
         }
       ]
@@ -307,9 +379,9 @@
           name: "光の鍛冶ハンマー",
           level: "職人Lv 45",
           materials: [
-            { name: "マデュライト", count: 20, shop: "バザー" },
-            { name: "大きな金属", count: 10, shop: "バザー" },
-            { name: "ようせいのひだね", count: 10, shop: "店", place: "各ギルド素材屋", price: "1,000G" }
+            { name: "マデュライト", count: 20, shop: "バザー", defaultPrice: 2200 },
+            { name: "大きな金属", count: 10, shop: "バザー", defaultPrice: 1500 },
+            { name: "ようせいのひだね", count: 10, shop: "店", place: "各ギルド素材屋", price: 1000 }
           ]
         }
       ]
@@ -320,18 +392,18 @@
           name: "バトルパッツァ",
           level: "職人Lv 40",
           materials: [
-            { name: "しもふりにく", count: 3, shop: "バザー" },
-            { name: "ピリからゼリー", count: 2, shop: "店", place: "オルフェア素材屋", price: "120G" },
-            { name: "デリシャスオイル", count: 12, shop: "店", place: "オルフェア・素材屋", price: "200G" }
+            { name: "しもふりにく", count: 3, shop: "バザー", defaultPrice: 18000 },
+            { name: "ピリからゼリー", count: 2, shop: "店", place: "オルフェア素材屋", price: 120 },
+            { name: "デリシャスオイル", count: 12, shop: "店", place: "オルフェア素材屋", price: 200 }
           ]
         },
         {
           name: "スマッシュポテト",
           level: "職人Lv 30",
           materials: [
-            { name: "ジャンボポテト", count: 5, shop: "店", place: "オルフェア素材屋", price: "120G" },
-            { name: "ピュアスノー", count: 3, shop: "店", place: "オルフェア素材屋", price: "120G" },
-            { name: "デリシャスオイル", count: 6, shop: "店", place: "オルフェア・素材屋", price: "200G" }
+            { name: "ジャンボポテト", count: 5, shop: "店", place: "オルフェア素材屋", price: 120 },
+            { name: "ピュアスノー", count: 3, shop: "店", place: "オルフェア素材屋", price: 120 },
+            { name: "デリシャスオイル", count: 6, shop: "店", place: "オルフェア素材屋", price: 200 }
           ]
         }
       ]
@@ -342,9 +414,9 @@
           name: "こうげき力 +6 (成功)",
           level: "錬金Lv 40",
           materials: [
-            { name: "ちからのゆびわ", count: 1, shop: "バザー" },
-            { name: "ようせいの毒薬", count: 5, shop: "店", place: "ギルド素材屋", price: "300G" },
-            { name: "汗と涙の結晶", count: 10, shop: "バザー" }
+            { name: "ちからのゆびわ", count: 1, shop: "バザー", defaultPrice: 5000 },
+            { name: "ようせいの毒薬", count: 5, shop: "店", place: "ギルド素材屋", price: 300 },
+            { name: "汗と涙の結晶", count: 10, shop: "バザー", defaultPrice: 3800 }
           ]
         }
       ]
@@ -355,8 +427,8 @@
           name: "呪文発動速度 +6%",
           level: "錬金Lv 40",
           materials: [
-            { name: "いつくしみのほむら", count: 2, shop: "バザー" },
-            { name: "汗と涙の結晶", count: 10, shop: "バザー" }
+            { name: "いつくしみのほむら", count: 2, shop: "バザー", defaultPrice: 12000 },
+            { name: "汗と涙の結晶", count: 10, shop: "バザー", defaultPrice: 3800 }
           ]
         }
       ]
@@ -421,7 +493,7 @@
     selectItem.disabled = false;
   };
 
-  // 3. アイテム選択時（結果表示）
+  // 3. アイテム選択時（表示＆計算処理）
   selectItem.onchange = () => {
     const job = selectJob.value;
     const cat = selectCategory.value;
@@ -439,21 +511,16 @@
     const listEl = document.getElementById("res-materials");
     listEl.innerHTML = "";
 
-    item.materials.forEach(mat => {
+    item.materials.forEach((mat, i) => {
       let li = document.createElement("li");
       li.className = "material-item";
 
-      // 入手ルートの表示切り替え
-      let detailHtml = "";
-      if (mat.shop === "店") {
-        detailHtml = `
-          <span class="badge badge-shop">店</span>
-          <span class="shop-info">場所: ${mat.place}</span>
-          <span class="shop-price">1個 ${mat.price}</span>
-        `;
-      } else {
-        detailHtml = `<span class="badge badge-bazaar">バザー</span>`;
-      }
+      const isShop = mat.shop === "店";
+      const badgeHtml = isShop
+        ? `<span class="badge badge-shop">店</span><span class="shop-info">場所: ${mat.place}</span>`
+        : `<span class="badge badge-bazaar">バザー</span>`;
+
+      const unitPrice = isShop ? mat.price : (mat.defaultPrice || 0);
 
       li.innerHTML = `
         <div class="mat-top">
@@ -461,14 +528,46 @@
           <span class="mat-count">× ${mat.count} 個</span>
         </div>
         <div class="mat-detail">
-          ${detailHtml}
+          ${badgeHtml}
+        </div>
+        <div class="calc-row">
+          <div class="calc-input-group">
+            <label>単価:</label>
+            <input type="number" class="price-input" id="price-${i}" value="${unitPrice}" ${isShop ? 'disabled' : ''} oninput="calculateTotal()">
+            <label>G</label>
+          </div>
+          <span class="subtotal" id="subtotal-${i}">0 G</span>
         </div>
       `;
       listEl.appendChild(li);
     });
 
     resultCard.style.display = "block";
+    calculateTotal();
   };
+
+  // 原価の自動計算関数
+  function calculateTotal() {
+    const job = selectJob.value;
+    const cat = selectCategory.value;
+    const idx = selectItem.value;
+
+    if (!job || !cat || idx === "") return;
+
+    const item = CRAFT_DATA[job][cat][idx];
+    let grandTotal = 0;
+
+    item.materials.forEach((mat, i) => {
+      const inputEl = document.getElementById(`price-${i}`);
+      const price = parseFloat(inputEl.value) || 0;
+      const subtotal = price * mat.count;
+
+      document.getElementById(`subtotal-${i}`).innerText = `${subtotal.toLocaleString()} G`;
+      grandTotal += subtotal;
+    });
+
+    document.getElementById("total-price").innerText = `${grandTotal.toLocaleString()} G`;
+  }
 </script>
 
 </body>
