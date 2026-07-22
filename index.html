@@ -14,8 +14,8 @@
 
     body {
       font-family: "Hiragino Sans", "Meiryo", sans-serif;
-      background: #0f141d;
-      color: #e0e6ed;
+      background: #12161f;
+      color: #d1d5db;
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -25,50 +25,54 @@
 
     .container {
       width: 100%;
-      max-width: 520px;
-      background: #1a2230;
-      border: 2px solid #d4af37;
-      border-radius: 16px;
+      max-width: 500px;
+      background: #1a202c;
+      border: 1px solid #2d3748;
+      border-radius: 12px;
       padding: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     }
 
+    /* メインタイトルのみアクセントカラー */
     h1 {
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       text-align: center;
-      color: #f39c12;
+      color: #38bdf8; /* 見出しカラー：爽やかなブルー */
       margin-bottom: 20px;
       padding-bottom: 10px;
-      border-bottom: 1px solid #334155;
-      letter-spacing: 1px;
+      border-bottom: 1px solid #2d3748;
+      letter-spacing: 0.5px;
     }
 
     .form-group {
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     label {
       display: block;
       font-size: 0.85rem;
-      color: #94a3b8;
+      color: #9ca3af;
       margin-bottom: 6px;
-      font-weight: bold;
+      font-weight: 600;
+    }
+
+    /* iOS等の自動ズームを防ぐため font-size: 16px を指定 */
+    select, input {
+      font-size: 16px !important;
     }
 
     select {
       width: 100%;
-      padding: 12px;
+      padding: 10px 12px;
       background: #0f172a;
-      border: 1px solid #475569;
-      border-radius: 10px;
-      color: #fff;
-      font-size: 1rem;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      color: #f3f4f6;
       outline: none;
-      transition: border-color 0.2s;
     }
 
     select:focus {
-      border-color: #f39c12;
+      border-color: #38bdf8;
     }
 
     select:disabled {
@@ -80,9 +84,9 @@
     .result-card {
       margin-top: 20px;
       background: #0f172a;
-      border-radius: 12px;
+      border-radius: 10px;
       padding: 16px;
-      border: 1px solid #334155;
+      border: 1px solid #1e293b;
       display: none;
     }
 
@@ -92,21 +96,21 @@
       align-items: center;
       margin-bottom: 12px;
       padding-bottom: 8px;
-      border-bottom: 1px dashed #334155;
+      border-bottom: 1px solid #1e293b;
     }
 
     .item-name {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: bold;
-      color: #5eead4;
+      color: #f3f4f6;
     }
 
     .item-level {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       background: #1e293b;
       padding: 2px 8px;
-      border-radius: 12px;
-      color: #cbd5e1;
+      border-radius: 4px;
+      color: #9ca3af;
     }
 
     .material-list {
@@ -114,7 +118,7 @@
     }
 
     .material-item {
-      padding: 12px 0;
+      padding: 10px 0;
       border-bottom: 1px solid #1e293b;
     }
 
@@ -126,48 +130,47 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .mat-name {
-      font-size: 0.95rem;
-      font-weight: bold;
+      font-size: 0.9rem;
+      color: #e5e7eb;
     }
 
     .mat-count {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: bold;
-      color: #f39c12;
+      color: #9ca3af;
     }
 
     .mat-detail {
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 0.82rem;
-      flex-wrap: wrap;
-      margin-bottom: 8px;
+      font-size: 0.75rem;
+      margin-bottom: 6px;
     }
 
     .badge {
-      padding: 2px 8px;
+      padding: 1px 6px;
       border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: bold;
+      font-size: 0.7rem;
+      font-weight: 600;
     }
 
     .badge-shop {
-      background: #15803d;
-      color: #bbf7d0;
+      background: #166534;
+      color: #dcfce7;
     }
 
     .badge-bazaar {
-      background: #1e40af;
-      color: #bfdbfe;
+      background: #1e3a8a;
+      color: #dbeafe;
     }
 
     .shop-info {
-      color: #94a3b8;
+      color: #6b7280;
     }
 
     /* 価格入力フォーム */
@@ -177,7 +180,7 @@
       justify-content: space-between;
       background: #1e293b;
       padding: 6px 10px;
-      border-radius: 8px;
+      border-radius: 6px;
     }
 
     .calc-input-group {
@@ -192,66 +195,61 @@
     }
 
     .price-input {
-      width: 100px;
-      padding: 6px 8px;
+      width: 95px;
+      padding: 4px 8px;
       background: #0f172a;
-      border: 1px solid #475569;
-      border-radius: 6px;
-      color: #ffd700;
-      font-weight: bold;
+      border: 1px solid #334155;
+      border-radius: 4px;
+      color: #f3f4f6;
       text-align: right;
-      font-size: 0.9rem;
     }
 
     .price-input:disabled {
-      background: #1a2230;
-      color: #94a3b8;
-      border-color: #334155;
+      background: #1a202c;
+      color: #6b7280;
+      border-color: #1e293b;
     }
 
     .subtotal {
-      font-size: 0.9rem;
-      color: #e2e8f0;
-      font-weight: bold;
+      font-size: 0.85rem;
+      color: #cbd5e1;
     }
 
-    /* 合計原価エリア */
+    /* 原価表示 */
     .total-card {
-      margin-top: 16px;
-      background: #1e1b4b;
-      border: 1px solid #6366f1;
-      border-radius: 10px;
-      padding: 12px 16px;
+      margin-top: 14px;
+      background: #1e293b;
+      border-radius: 8px;
+      padding: 10px 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
     .total-title {
-      font-size: 0.95rem;
-      font-weight: bold;
-      color: #c7d2fe;
+      font-size: 0.85rem;
+      color: #9ca3af;
     }
 
     .total-price {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: bold;
-      color: #ffd700;
+      color: #f3f4f6;
     }
 
     /* 利益計算エリア */
     .sale-card {
-      margin-top: 12px;
-      background: #111827;
-      border: 2px solid #3b82f6;
-      border-radius: 10px;
-      padding: 14px 16px;
+      margin-top: 10px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 12px 14px;
     }
 
     .sale-title {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: bold;
-      color: #93c5fd;
+      color: #38bdf8; /* 見出しカラー */
       margin-bottom: 8px;
     }
 
@@ -259,26 +257,25 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .sale-input-group label {
       margin-bottom: 0;
-      color: #cbd5e1;
+      color: #d1d5db;
       font-size: 0.85rem;
     }
 
     .sale-input {
-      width: 130px;
-      font-size: 1rem;
-      border-color: #3b82f6;
+      width: 120px;
+      border-color: #334155;
     }
 
     .fee-note {
-      font-size: 0.72rem;
-      color: #64748b;
+      font-size: 0.7rem;
+      color: #6b7280;
       text-align: right;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .profit-row {
@@ -286,17 +283,18 @@
       justify-content: space-between;
       align-items: center;
       padding-top: 8px;
-      border-top: 1px dashed #374151;
+      border-top: 1px solid #1e293b;
     }
 
     .profit-title {
-      font-size: 1rem;
+      font-size: 0.9rem;
       font-weight: bold;
-      color: #fff;
+      color: #f3f4f6;
     }
 
+    /* 利益金額（ここだけ目立つように色を残す） */
     .profit-price {
-      font-size: 1.4rem;
+      font-size: 1.25rem;
       font-weight: bold;
       color: #4ade80;
     }
@@ -343,24 +341,24 @@
 
     <!-- 合計原価 -->
     <div class="total-card">
-      <span class="total-title">💰 必要原価（合計）</span>
+      <span class="total-title">必要原価（合計）</span>
       <span class="total-price" id="total-price">0 G</span>
     </div>
 
     <!-- 利益計算エリア -->
     <div class="sale-card">
-      <div class="sale-title">📊 利益シミュレーション</div>
+      <div class="sale-title">利益シミュレーション</div>
       <div class="sale-input-group">
-        <label>完成品の販売予定価格:</label>
+        <label>販売予定価格:</label>
         <div>
           <input type="number" class="price-input sale-input" id="sale-price-input" placeholder="例: 200000" oninput="calculateTotal()">
           <span style="font-size: 0.85rem;"> G</span>
         </div>
       </div>
-      <div class="fee-note">※バザー手数料（5%）を引いた額で計算</div>
+      <div class="fee-note">※バザー手数料（5%）差し引き後</div>
 
       <div class="profit-row">
-        <span class="profit-title">✨ 見込み利益</span>
+        <span class="profit-title">見込み純利益</span>
         <span class="profit-price" id="profit-price">0 G</span>
       </div>
     </div>
@@ -368,7 +366,7 @@
 </div>
 
 <script>
-  // --- DQ10 データベース（目安価格・店舗情報付き） ---
+  // --- DQ10 データベース（木工・さいほう・調理・ランプに限定＆拡充） ---
   const CRAFT_DATA = {
     "🌳 木工職人": {
       "🏹 弓": [
@@ -380,6 +378,15 @@
             { name: "デモニウム鉱石", count: 15, shop: "バザー", defaultPrice: 8000 },
             { name: "彩虹のしずく", count: 3, shop: "バザー", defaultPrice: 22000 },
             { name: "超ようせいのひだね", count: 6, shop: "バザー", defaultPrice: 32000 }
+          ]
+        },
+        {
+          name: "シェキナーの弓",
+          level: "装備Lv 110",
+          materials: [
+            { name: "古代樹の化石", count: 30, shop: "バザー", defaultPrice: 8500 },
+            { name: "竜のうろこ", count: 15, shop: "バザー", defaultPrice: 4000 },
+            { name: "超ようせいのひだね", count: 5, shop: "バザー", defaultPrice: 32000 }
           ]
         },
         {
@@ -401,9 +408,18 @@
             { name: "古代樹の化石", count: 20, shop: "バザー", defaultPrice: 8500 },
             { name: "超ようせいのひだね", count: 6, shop: "バザー", defaultPrice: 32000 }
           ]
+        },
+        {
+          name: "征矢たてしの杖",
+          level: "装備Lv 110",
+          materials: [
+            { name: "古代樹の化石", count: 28, shop: "バザー", defaultPrice: 8500 },
+            { name: "マゴニア草", count: 15, shop: "バザー", defaultPrice: 12000 },
+            { name: "超ようせいのひだね", count: 5, shop: "バザー", defaultPrice: 32000 }
+          ]
         }
       ],
-      "🎣 釣りざお": [
+      "🎣 釣り道具": [
         {
           name: "氷の釣りざお改",
           level: "職人Lv 40",
@@ -412,63 +428,75 @@
             { name: "プラチナ鉱石", count: 10, shop: "店", place: "住宅村・素材屋", price: 360 },
             { name: "ようせいのひだね", count: 8, shop: "店", place: "各ギルド素材屋", price: 1000 }
           ]
-        }
-      ]
-    },
-    "⚔️ 武器鍛冶": {
-      "🗡️ 片手剣": [
+        },
         {
-          name: "輝天の剣",
-          level: "装備Lv 115",
+          name: "炎の釣りざお改",
+          level: "職人Lv 40",
           materials: [
-            { name: "デモニウム鉱石", count: 30, shop: "バザー", defaultPrice: 8000 },
-            { name: "ほしのすな", count: 20, shop: "店", place: "各素材屋", price: 120 },
-            { name: "超ようせいのひだね", count: 6, shop: "バザー", defaultPrice: 32000 }
+            { name: "燃える大樹のけむり", count: 15, shop: "バザー", defaultPrice: 400 },
+            { name: "プラチナ鉱石", count: 10, shop: "店", place: "住宅村・素材屋", price: 360 },
+            { name: "ようせいのひだね", count: 8, shop: "店", place: "各ギルド素材屋", price: 1000 }
+          ]
+        },
+        {
+          name: "天使のルアー",
+          level: "職人Lv 40",
+          materials: [
+            { name: "天使のすず", count: 10, shop: "店", place: "各素材屋", price: 120 },
+            { name: "シャークフォーム", count: 5, shop: "バザー", defaultPrice: 1200 },
+            { name: "プラチナ鉱石", count: 8, shop: "店", place: "住宅村・素材屋", price: 360 },
+            { name: "ようせいのひだね", count: 6, shop: "店", place: "各ギルド素材屋", price: 1000 }
           ]
         }
       ]
     },
-    "🛡️ 防具鍛冶": {
-      "🛡️ 盾": [
-        {
-          name: "輝天の盾",
-          level: "装備Lv 115",
-          materials: [
-            { name: "デモニウム鉱石", count: 25, shop: "バザー", defaultPrice: 8000 },
-            { name: "プラチナ鉱石", count: 20, shop: "店", place: "住宅村・素材屋", price: 360 },
-            { name: "超ようせいのひだね", count: 5, shop: "バザー", defaultPrice: 32000 }
-          ]
-        }
-      ]
-    },
-    "🧵 さいほう": {
-      "🥋 ローブ": [
+    "🧵 さいほう職人": {
+      "🥋 からだ上": [
         {
           name: "ロードリーコンボイ",
           level: "装備Lv 115",
           materials: [
             { name: "シルク草", count: 40, shop: "店", place: "各素材屋", price: 240 },
             { name: "妖精の綿花", count: 20, shop: "バザー", defaultPrice: 1800 },
-            { name: "あまつのミスト", count: 6, shop: "バザー", defaultPrice: 15000 }
+            { name: "あまつのミスト", count: 6, shop: "バザー", defaultPrice: 15000 },
+            { name: "超さいほうのひ糸", count: 6, shop: "バザー", defaultPrice: 30000 }
+          ]
+        },
+        {
+          name: "ワンダラーズマンテル",
+          level: "装備Lv 115",
+          materials: [
+            { name: "おびえのすず", count: 30, shop: "店", place: "各素材屋", price: 240 },
+            { name: "妖精の綿花", count: 20, shop: "バザー", defaultPrice: 1800 },
+            { name: "超さいほうのひ糸", count: 6, shop: "バザー", defaultPrice: 30000 }
           ]
         }
-      ]
-    },
-    "🔨 道具鍛冶": {
-      "🛠️ 職人道具": [
+      ],
+      "🧢 あたま": [
         {
-          name: "光の鍛冶ハンマー",
-          level: "職人Lv 45",
+          name: "ロードリーハット",
+          level: "装備Lv 115",
           materials: [
-            { name: "マデュライト", count: 20, shop: "バザー", defaultPrice: 2200 },
-            { name: "大きな金属", count: 10, shop: "バザー", defaultPrice: 1500 },
-            { name: "ようせいのひだね", count: 10, shop: "店", place: "各ギルド素材屋", price: 1000 }
+            { name: "シルク草", count: 30, shop: "店", place: "各素材屋", price: 240 },
+            { name: "あまつのミスト", count: 4, shop: "バザー", defaultPrice: 15000 },
+            { name: "超さいほうのひ糸", count: 5, shop: "バザー", defaultPrice: 30000 }
+          ]
+        }
+      ],
+      "👖 からだ下": [
+        {
+          name: "ロードリーローブ下",
+          level: "装備Lv 115",
+          materials: [
+            { name: "シルク草", count: 35, shop: "店", place: "各素材屋", price: 240 },
+            { name: "妖精の綿花", count: 15, shop: "バザー", defaultPrice: 1800 },
+            { name: "超さいほうのひ糸", count: 5, shop: "バザー", defaultPrice: 30000 }
           ]
         }
       ]
     },
     "🍳 調理職人": {
-      "🍲 料理": [
+      "🍲 バフ料理": [
         {
           name: "バトルパッツァ",
           level: "職人Lv 40",
@@ -486,29 +514,65 @@
             { name: "ピュアスノー", count: 3, shop: "店", place: "オルフェア素材屋", price: 120 },
             { name: "デリシャスオイル", count: 6, shop: "店", place: "オルフェア素材屋", price: 200 }
           ]
-        }
-      ]
-    },
-    "🏺 ツボ錬金": {
-      "💥 攻撃効果": [
+        },
         {
-          name: "こうげき力 +6 (成功)",
-          level: "錬金Lv 40",
+          name: "ほくほく肉じゃが",
+          level: "職人Lv 35",
           materials: [
-            { name: "ちからのゆびわ", count: 1, shop: "バザー", defaultPrice: 5000 },
-            { name: "ようせいの毒薬", count: 5, shop: "店", place: "ギルド素材屋", price: 300 },
-            { name: "汗と涙の結晶", count: 10, shop: "バザー", defaultPrice: 3800 }
+            { name: "しもふりにく", count: 2, shop: "バザー", defaultPrice: 18000 },
+            { name: "ジャンボポテト", count: 4, shop: "店", place: "オルフェア素材屋", price: 120 },
+            { name: "デリシャスオイル", count: 8, shop: "店", place: "オルフェア素材屋", price: 200 }
+          ]
+        },
+        {
+          name: "バランスパスタ",
+          level: "職人Lv 38",
+          materials: [
+            { name: "かいしんのめん", count: 3, shop: "バザー", defaultPrice: 2500 },
+            { name: "フレッシュトマト", count: 4, shop: "バザー", defaultPrice: 6000 },
+            { name: "デリシャスオイル", count: 10, shop: "店", place: "オルフェア素材屋", price: 200 }
+          ]
+        },
+        {
+          name: "アクロバットケーキ",
+          level: "職人Lv 40",
+          materials: [
+            { name: "ふわふわ小麦", count: 5, shop: "店", place: "オルフェア素材屋", price: 120 },
+            { name: "フレッシュトマト", count: 3, shop: "バザー", defaultPrice: 6000 },
+            { name: "デリシャスオイル", count: 10, shop: "店", place: "オルフェア素材屋", price: 200 }
           ]
         }
       ]
     },
     "🔮 ランプ錬金": {
-      "⚡ 速度効果": [
+      "⚡ 呪文・発動速度": [
         {
-          name: "呪文発動速度 +6%",
+          name: "呪文発動速度 +6% (成功)",
           level: "錬金Lv 40",
           materials: [
             { name: "いつくしみのほむら", count: 2, shop: "バザー", defaultPrice: 12000 },
+            { name: "汗と涙の結晶", count: 10, shop: "バザー", defaultPrice: 3800 },
+            { name: "あかいいと", count: 10, shop: "店", place: "各素材屋", price: 80 }
+          ]
+        }
+      ],
+      "🛡️ 属性・呪文耐性": [
+        {
+          name: "呪文攻撃耐性 +7% (成功)",
+          level: "錬金Lv 40",
+          materials: [
+            { name: "まほうのえのぐ", count: 3, shop: "店", place: "ギルド素材屋", price: 300 },
+            { name: "汗と涙の結晶", count: 10, shop: "バザー", defaultPrice: 3800 },
+            { name: "かがみいし", count: 8, shop: "店", place: "各素材屋", price: 200 }
+          ]
+        }
+      ],
+      "🎯 会心・攻撃": [
+        {
+          name: "かいしん率 +1.4% (成功)",
+          level: "錬金Lv 40",
+          materials: [
+            { name: "よるのとばり", count: 4, shop: "バザー", defaultPrice: 1500 },
             { name: "汗と涙の結晶", count: 10, shop: "バザー", defaultPrice: 3800 }
           ]
         }
@@ -601,7 +665,7 @@
 
       const isShop = mat.shop === "店";
       const badgeHtml = isShop
-        ? `<span class="badge badge-shop">店</span><span class="shop-info">場所: ${mat.place}</span>`
+        ? `<span class="badge badge-shop">店</span><span class="shop-info">${mat.place}</span>`
         : `<span class="badge badge-bazaar">バザー</span>`;
 
       const unitPrice = isShop ? mat.price : (mat.defaultPrice || 0);
@@ -665,10 +729,10 @@
 
       if (profit >= 0) {
         profitEl.innerText = `+${profit.toLocaleString()} G`;
-        profitEl.style.color = "#4ade80"; // 黒字：緑
+        profitEl.style.color = "#4ade80"; // 黒字：グリーン
       } else {
         profitEl.innerText = `${profit.toLocaleString()} G`;
-        profitEl.style.color = "#f87171"; // 赤字：赤
+        profitEl.style.color = "#f87171"; // 赤字：レッド
       }
     } else {
       profitEl.innerText = "0 G";
