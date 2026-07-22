@@ -20,7 +20,7 @@
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      padding: 16px 12px;
+      padding: 10px 8px;
     }
 
     .container {
@@ -28,32 +28,45 @@
       max-width: 480px;
       background: #1e293b;
       border-radius: 12px;
-      padding: 20px 16px;
+      padding: 14px 12px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     }
 
-    /* タイトル：絵文字削除・指定位置で改行 */
+    /* タイトル */
     h1 {
-      font-size: 1.2rem;
+      font-size: 1.05rem;
       text-align: center;
       color: #38bdf8;
-      margin-bottom: 20px;
-      padding-bottom: 12px;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
       border-bottom: 1px solid #334155;
-      line-height: 1.4;
+      line-height: 1.3;
       font-weight: bold;
       letter-spacing: 0.5px;
     }
 
+    /* 選択フォームエリア */
+    .selection-box {
+      background: #0f172a;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #334155;
+    }
+
     .form-group {
-      margin-bottom: 14px;
+      margin-bottom: 8px;
+    }
+
+    .form-group:last-child {
+      margin-bottom: 0;
     }
 
     label {
       display: block;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: #94a3b8;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       font-weight: 600;
     }
 
@@ -64,10 +77,10 @@
 
     select {
       width: 100%;
-      padding: 10px 12px;
-      background: #0f172a;
+      padding: 8px 10px;
+      background: #1e293b;
       border: 1px solid #334155;
-      border-radius: 8px;
+      border-radius: 6px;
       color: #f8fafc;
       outline: none;
       appearance: none;
@@ -83,11 +96,46 @@
       cursor: not-allowed;
     }
 
+    /* 選択済みサマリーバナー（1行でコンパクトに表示） */
+    .summary-banner {
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+      background: #0f172a;
+      border: 1px solid #38bdf8;
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-bottom: 12px;
+    }
+
+    .summary-text {
+      font-size: 0.8rem;
+      color: #38bdf8;
+      font-weight: bold;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-right: 8px;
+    }
+
+    .btn-change {
+      background: #334155;
+      color: #f8fafc;
+      border: none;
+      border-radius: 4px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .btn-change:active {
+      background: #475569;
+    }
+
     /* 結果エリア */
     .result-card {
-      margin-top: 20px;
-      padding-top: 16px;
-      border-top: 1px solid #334155;
       display: none;
     }
 
@@ -95,30 +143,31 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 14px;
+      margin-bottom: 8px;
+      padding: 0 2px;
     }
 
     .item-name {
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: bold;
       color: #f8fafc;
     }
 
     .item-level {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       color: #94a3b8;
       background: #0f172a;
-      padding: 2px 8px;
+      padding: 2px 6px;
       border-radius: 4px;
     }
 
     .material-list {
       list-style: none;
-      margin-bottom: 16px;
+      margin-bottom: 10px;
     }
 
     .material-item {
-      padding: 10px 0;
+      padding: 6px 0;
       border-bottom: 1px solid #334155;
     }
 
@@ -130,16 +179,16 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
 
     .mat-name {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: #cbd5e1;
     }
 
     .mat-count {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: #94a3b8;
     }
 
@@ -147,14 +196,14 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 0.75rem;
-      margin-bottom: 8px;
+      font-size: 0.7rem;
+      margin-bottom: 4px;
     }
 
     .badge {
-      padding: 1px 6px;
+      padding: 1px 5px;
       border-radius: 3px;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       font-weight: 600;
     }
 
@@ -178,25 +227,25 @@
       align-items: center;
       justify-content: space-between;
       background: #0f172a;
-      padding: 6px 10px;
+      padding: 4px 8px;
       border-radius: 6px;
     }
 
     .calc-input-group {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
     }
 
     .calc-input-group label {
       margin-bottom: 0;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       color: #64748b;
     }
 
     .price-input {
-      width: 90px;
-      padding: 4px 8px;
+      width: 85px;
+      padding: 3px 6px;
       background: #1e293b;
       border: 1px solid #334155;
       border-radius: 4px;
@@ -211,7 +260,7 @@
     }
 
     .subtotal {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: #cbd5e1;
       font-weight: 600;
     }
@@ -220,23 +269,24 @@
     .summary-card {
       background: #0f172a;
       border-radius: 8px;
-      padding: 14px;
+      padding: 10px 12px;
+      margin-top: 8px;
     }
 
     .summary-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
 
     .summary-label {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: #94a3b8;
     }
 
     .total-price {
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: bold;
       color: #f8fafc;
     }
@@ -245,7 +295,6 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 8px;
     }
 
     .sale-input-wrap {
@@ -255,33 +304,33 @@
     }
 
     .sale-input {
-      width: 110px;
+      width: 100px;
       border-color: #334155;
     }
 
     .fee-note {
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       color: #64748b;
       text-align: right;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
 
     .profit-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-top: 12px;
+      padding-top: 8px;
       border-top: 1px solid #1e293b;
     }
 
     .profit-title {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: bold;
       color: #f8fafc;
     }
 
     .profit-price {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: bold;
       color: #4ade80;
     }
@@ -290,31 +339,39 @@
 <body>
 
 <div class="container">
-  <!-- 指定通り改行したタイトル -->
   <h1>DQ10職人素材<br>原価＆利益チェッカー</h1>
 
-  <!-- 1. 職人選択 -->
-  <div class="form-group">
-    <label>1. 職人を選ぶ</label>
-    <select id="select-job">
-      <option value="">-- 職人を選択 --</option>
-    </select>
+  <!-- 選択された設定のサマリー（初期状態は隠す） -->
+  <div class="summary-banner" id="summary-banner">
+    <span class="summary-text" id="summary-text">選択中: -</span>
+    <button class="btn-change" onclick="toggleSelectionForm(true)">変更</button>
   </div>
 
-  <!-- 2. ジャンル選択 -->
-  <div class="form-group">
-    <label>2. ジャンルを選ぶ</label>
-    <select id="select-category" disabled>
-      <option value="">-- 先に職人を選んでください --</option>
-    </select>
-  </div>
+  <!-- 選択フォームエリア -->
+  <div class="selection-box" id="selection-box">
+    <!-- 1. 職人選択 -->
+    <div class="form-group">
+      <label>1. 職人を選ぶ</label>
+      <select id="select-job">
+        <option value="">-- 職人を選択 --</option>
+      </select>
+    </div>
 
-  <!-- 3. アイテム選択 -->
-  <div class="form-group">
-    <label>3. 作りたいものを選択</label>
-    <select id="select-item" disabled>
-      <option value="">-- 先にジャンルを選んでください --</option>
-    </select>
+    <!-- 2. ジャンル選択 -->
+    <div class="form-group">
+      <label>2. ジャンルを選ぶ</label>
+      <select id="select-category" disabled>
+        <option value="">-- 先に職人を選んでください --</option>
+      </select>
+    </div>
+
+    <!-- 3. アイテム選択 -->
+    <div class="form-group">
+      <label>3. 作りたいものを選択</label>
+      <select id="select-item" disabled>
+        <option value="">-- 先にジャンルを選んでください --</option>
+      </select>
+    </div>
   </div>
 
   <!-- 結果表示＆計算エリア -->
@@ -338,7 +395,7 @@
         <span class="summary-label">販売予定価格</span>
         <div class="sale-input-wrap">
           <input type="number" class="price-input sale-input" id="sale-price-input" placeholder="例: 200000" oninput="calculateTotal()">
-          <span style="font-size: 0.8rem; color: #94a3b8;">G</span>
+          <span style="font-size: 0.75rem; color: #94a3b8;">G</span>
         </div>
       </div>
       <div class="fee-note">※バザー手数料（5%）自動引算</div>
@@ -352,7 +409,7 @@
 </div>
 
 <script>
-  // --- DQ10 データベース（木工・さいほう・調理・ランプ） ---
+  // --- DQ10 データベース ---
   const CRAFT_DATA = {
     "木工職人": {
       "弓": [
@@ -570,6 +627,9 @@
   const selectCategory = document.getElementById("select-category");
   const selectItem = document.getElementById("select-item");
   const resultCard = document.getElementById("result-card");
+  const selectionBox = document.getElementById("selection-box");
+  const summaryBanner = document.getElementById("summary-banner");
+  const summaryText = document.getElementById("summary-text");
 
   // 初期化：職人一覧
   for (let job in CRAFT_DATA) {
@@ -577,6 +637,17 @@
     opt.value = job;
     opt.innerText = job;
     selectJob.appendChild(opt);
+  }
+
+  // フォーム開閉の切り替え処理
+  function toggleSelectionForm(showForm) {
+    if (showForm) {
+      selectionBox.style.display = "block";
+      summaryBanner.style.display = "none";
+    } else {
+      selectionBox.style.display = "none";
+      summaryBanner.style.display = "flex";
+    }
   }
 
   // 1. 職人選択時
@@ -641,6 +712,10 @@
     const item = CRAFT_DATA[job][cat][idx];
     document.getElementById("res-name").innerText = item.name;
     document.getElementById("res-level").innerText = item.level;
+
+    // 選択された内容をサマリーバナーに設定してフォームを隠す
+    summaryText.innerText = `選択中: ${job} ＞ ${cat} ＞ ${item.name}`;
+    toggleSelectionForm(false);
 
     const listEl = document.getElementById("res-materials");
     listEl.innerHTML = "";
