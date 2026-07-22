@@ -24,7 +24,7 @@ window.CRAFT_DATA["木工職人"] = {
       materials: [
         { name: "古代樹の化石", count: 24, shop: "バザー", defaultPrice: 8500 },
         { name: "大きな貝ガラ", count: 30, shop: "両方", place: "ジュレット素材屋", defaultPrice: 240 },
-        { name: "ようせいのひだne", count: 16, shop: "両方", place: "ギルド素材屋", defaultPrice: 1000 }
+        { name: "ようせいのひだね", count: 16, shop: "両方", place: "ギルド素材屋", defaultPrice: 1000 }
       ]
     },
     {
@@ -198,25 +198,6 @@ window.CRAFT_DATA["木工職人"] = {
         { name: "古代樹の化石", count: 10, shop: "バザー", defaultPrice: 8500 },
         { name: "プラチナ鉱石", count: 12, shop: "両方", place: "住宅村素材屋", defaultPrice: 360 },
         { name: "超ようせいのひだね", count: 2, shop: "バザー", defaultPrice: 32000 }
-      ]
-    },
-    {
-      name: "天使のルアー",
-      level: "職人Lv 40",
-      materials: [
-        { name: "天使のすず", count: 10, shop: "両方", place: "各道具屋", defaultPrice: 120 },
-        { name: "シャークフォーム", count: 5, shop: "バザー", defaultPrice: 1200 },
-        { name: "プラチナ鉱石", count: 8, shop: "両方", place: "住宅村素材屋", defaultPrice: 360 },
-        { name: "ようせいのひだね", count: 6, shop: "両方", place: "ギルド素材屋", defaultPrice: 1000 }
-      ]
-    },
-    {
-      name: "トゲトゲルアー",
-      level: "職人Lv 40",
-      materials: [
-        { name: "鋭いツメ", count: 10, shop: "バザー", defaultPrice: 500 },
-        { name: "プラチナ鉱石", count: 8, shop: "両方", place: "住宅村素材屋", defaultPrice: 360 },
-        { name: "ようせいのひだね", count: 6, shop: "両方", place: "ギルド素材屋", defaultPrice: 1000 }
       ]
     }
   ],
